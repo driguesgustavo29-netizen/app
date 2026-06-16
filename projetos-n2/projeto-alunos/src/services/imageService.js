@@ -1,0 +1,7 @@
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
+export const pickImage = async (useCamera = false) => { const result = useCamera ? await ImagePicker.launchCameraAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, quality: 1 }) : await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, quality: 1 }); if (!result.canceled) return result.assets[0].uri; return null; };
+export const processImage = async (imageUri) => { try { const manipulatedImage = await ImageManipulator.manipulateAsync(imageUri, [{ resize: { width: 800 } }], { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }); return manipulatedImage.uri; } catch (error) { return null; } };
+export const saveImageLocally = async (imageUri, userId, tipo) => { try { const timestamp = Date.now(); const fileName = `${userId}_${tipo}_${timestamp}.jpg`; const newUri = FileSystem.documentDirectory + fileName; await FileSystem.copyAsync({ from: imageUri, to: newUri }); return newUri; } catch (error) { return null; } };
+export const getAndProcessImage = async (userId, tipo, useCamera = false) => { const rawUri = await pickImage(useCamera); if (!rawUri) return null; const processedUri = await processImage(rawUri); if (!processedUri) return null; const localUri = await saveImageLocally(processedUri, userId, tipo); return localUri; };

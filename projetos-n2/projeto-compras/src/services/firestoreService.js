@@ -1,0 +1,6 @@
+import { db } from '../../firebaseConfig';
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where } from 'firebase/firestore';
+export const salvarItem = async (userId, item) => { try { const docRef = await addDoc(collection(db, 'compras'), { ...item, userId, criadoEm: new Date() }); return { success: true, id: docRef.id }; } catch (error) { return { success: false, error: error.message }; } };
+export const listarItens = async (userId) => { try { const q = query(collection(db, 'compras'), where('userId', '==', userId)); const snapshot = await getDocs(q); const itens = []; snapshot.forEach((doc) => itens.push({ id: doc.id, ...doc.data() })); return { success: true, itens }; } catch (error) { return { success: false, error: error.message }; } };
+export const atualizarItem = async (id, dados) => { try { await updateDoc(doc(db, 'compras', id), dados); return { success: true }; } catch (error) { return { success: false, error: error.message }; } };
+export const deletarItem = async (id) => { try { await deleteDoc(doc(db, 'compras', id)); return { success: true }; } catch (error) { return { success: false, error: error.message }; } };
