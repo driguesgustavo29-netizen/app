@@ -5,7 +5,7 @@ import * as ImageManipulator from 'expo-image-manipulator';
 export const tirarFoto = async () => {
   const { status } = await ImagePicker.requestCameraPermissionsAsync();
   if (status !== 'granted') return null;
-  const result = await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], allowsEditing: true, aspect: [4, 3], quality: 1 });
+  const result = await ImagePicker.launchCameraAsync({ mediaTypes: ['images'], quality: 1 });
   if (!result.canceled && result.assets && result.assets.length > 0) {
     return result.assets[0].uri;
   }
