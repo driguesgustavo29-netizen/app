@@ -1,0 +1,7 @@
+import { db } from '../../firebaseConfig';
+import { collection, addDoc, updateDoc, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+export const salvarAluno = async (alunoData) => { try { const docRef = await addDoc(collection(db, 'alunos'), alunoData); return { success: true, id: docRef.id }; } catch (error) { return { success: false, error: error.message }; } };
+export const listarAlunos = (callback) => { return onSnapshot(collection(db, 'alunos'), (snapshot) => { const alunos = []; snapshot.forEach((doc) => alunos.push({ id: doc.id, ...doc.data() })); callback(alunos); }); };
+export const atualizarStatusAluno = async (alunoId, novoStatus) => { try { await updateDoc(doc(db, 'alunos', alunoId), { status: novoStatus }); return { success: true }; } catch (error) { return { success: false, error: error.message }; } };
+export const salvarPerfilUsuario = async (userId, perfil) => { try { await setDoc(doc(db, 'usuarios', userId), { perfil }); return { success: true }; } catch (error) { return { success: false, error: error.message }; } };
+export const getPerfilUsuario = async (userId) => { try { const docSnap = await getDoc(doc(db, 'usuarios', userId)); if (docSnap.exists()) return { success: true, perfil: docSnap.data().perfil }; else return { success: false, error: 'Perfil não encontrado' }; } catch (error) { return { success: false, error: error.message }; } };

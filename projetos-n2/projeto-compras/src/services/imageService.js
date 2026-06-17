@@ -1,0 +1,6 @@
+import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
+export const tirarFoto = async () => { const { status } = await ImagePicker.requestCameraPermissionsAsync(); if (status !== 'granted') return null; const result = await ImagePicker.launchCameraAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 1 }); if (!result.canceled) return result.assets[0].uri; return null; };
+export const processImage = async (uri) => { try { const processed = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 800 } }], { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }); return processed.uri; } catch (error) { return null; } };
+export const salvarLocal = async (uri, userId, produtoId) => { const fileName = `${userId}_${produtoId}_${Date.now()}.jpg`; const newUri = FileSystem.documentDirectory + fileName; await FileSystem.copyAsync({ from: uri, to: newUri }); return newUri; };
