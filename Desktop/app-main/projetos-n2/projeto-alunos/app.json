@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Sistema de Cadastro de Alunos",
+    "slug": "cadastro-alunos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Precisamos acessar suas fotos.",
+        "NSCameraUsageDescription": "Precisamos acessar a câmera."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O app precisa acessar suas fotos.",
+          "cameraPermission": "O app precisa acessar a câmera."
+        }
+      ]
+    ]
+  }
+}
